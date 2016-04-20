@@ -21,36 +21,44 @@ load_conf git-completion.bash
 # PS1
 #############################
 # @link http://www.jonmaddox.com/2008/03/13/show-your-git-branch-name-in-your-prompt/
-function parse_git_current_branch {
-    #git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/' -e 's/((/(/' -e 's/))/)/'
-    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/\* \(.*\)/\'$'\n''*\1/' -e 's/((/(/' -e 's/))/)/'
+function parse_git_branch {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/' -e 's/((/(/' -e 's/))/)/'
 }
-function parse_git_branches {
-    # in centos
-    git branch --no-color 2> /dev/null | sed -e '/^\*/d' | paste -s 2> /dev/null
-    if [[ $? -ne 0 ]]; then
-        # in macos
-        git branch --no-color 2> /dev/null | sed -e '/^\*/d' | paste -d ' ' - - - - - - -
-    fi
-}
-
 function proml() {
 # refer to https://wiki.archlinux.org/index.php/Color_Bash_Prompt
-# refer to https://en.wikipedia.org/wiki/ANSI_escape_code for more escape sequence information
     local RED="\[\033[0;31m\]"
     local GREEN="\[\033[0;32m\]"
+    local BGREEN="\[\033[1;32m\]"
+    local BLUE="\[\033[0;34m\]"
     local PURPLE="\[\033[0;35m\]"
     local COLOR_END="\[\033[0m\]"
     local YELLOW="\[\033[0;33m\]"
     local CYAN="\[\033[0;36m\]"
+    local UCYAN="\[\033[4;36m\]"
+    local WHITE="\[\033[0;37m\]"
+    local BRCOLOR="\[\033[0;33m\]"
 
     # http://en.wikipedia.org/wiki/List_of_emoticons
     local MARK_W="\342\234\227"
     local MARK_R="\342\234\223"
-    local PREFIX="⌘"
+    local mark_tl="\342\224\214"
+    local mark_bl="\342\224\224"
+    local minus="\342\224\200"
+    if [ $USER = "root" ]; then
+        #local PREFIX="♚"
+        local PREFIX="♔"
+    else
+        #local PREFIX="⚑"
+        #local PREFIX="♖"
+        #local PREFIX="♛"
+        #local PREFIX="☞"
+        local PREFIX=""
+        #local PREFIX="⌘"
+        #local PREFIX="♬"
+    fi
 
     # https://bbs.archlinux.org/viewtopic.php?pid=1156660#p1156660
-    PS1="\n\$(if [[ \$? == 0 ]]; then echo \"$GREEN$MARK_R\"; else echo \"$RED$MARK_W\"; fi) $YELLOW\u@$YELLOW\h$COLOR_END:$CYAN\w$COLOR_END$GREEN\$(parse_git_current_branch)$COLOR_END\$(parse_git_branches)\n$PURPLE$PREFIX$COLOR_END "
+    PS1="\$(if [[ \$? == 0 ]]; then echo \"$GREEN$MARK_R\"; else echo \"$RED$MARK_W\"; fi) $YELLOW\u$COLOR_END:$CYAN\w$COLOR_END:$BRCOLOR\$(parse_git_branch)$COLOR_END $PURPLE$PREFIX$COLOR_END "
 }
 proml
 

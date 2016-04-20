@@ -1,0 +1,146 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+" Git plugin not hosted on GitHub
+" Plugin 'git://git.wincent.com/command-t.git'
+Plugin 'bling/vim-airline'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+"short cut
+function! HandleURL()
+  let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
+  echo s:uri
+  if s:uri != ""
+    silent exec "!open '".s:uri."'"
+  else
+    echo "No URI found in line."
+  endif
+endfunction
+
+map <leader>u :call HandleURL()<cr>
+"缩进为2个空格宽度
+set tabstop=2
+"编辑插入tab时，把tab算作的空格数
+set softtabstop=2
+"自动缩进使用的空格数
+set shiftwidth=2
+"自动缩进
+set autoindent
+"行号
+set number
+"状态
+set statusline+=%F
+set laststatus=2
+
+" ====================================
+" 以下set配置vi无                 ====
+" ====================================
+"非兼容模式
+set nocompatible
+"文件默认格式unix
+set ff=unix
+
+"需编译时+syntax
+"打开语法高亮
+syntax on
+" 用 CursorLine |hl-CursorLine| 高亮光标所在的屏幕行。用于方便定位光标。
+set cursorline
+
+"需编译时+cmdline_info
+"底部标尺
+set ruler
+
+"需编译时+extra_search
+"搜索时高亮显示结果
+set hls
+"输入搜索命令时，显示目前输入的模式的匹配位置
+set incsearch
+
+"需编译时+wildmenu
+"使用:e命令的时候 可选项预览
+set wildmenu
+"set wildignore=*static/yui*
+
+"需编译时+multi_byte
+"文件默认编码
+set enc=utf-8
+"文件保存时使用的编码
+"fileencoding=utf-8
+"打开文件进行解码的猜测列表，优先以utf-8打开
+set fileencodings=utf-8,gbk
+
+"插入模式里插入<Tab>时使用合适数量的空格
+set expandtab
+"鼠标捕捉
+set mouse=v
+"设置制表符、回车、空格的显示
+"set list
+"list模式使用的字符串
+"set listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_
+
+"需编译时+comments
+set comments=sl:/*,mb:*,ex:*/
+
+"需编译时+windows
+"显示标签栏 0: 从不 1: 大于1个时显示 2: 总是
+set showtabline=2
+
+" 光标上下两侧最少保留的屏幕行数。这使你工作时总有一些可见的上下文。
+set scrolloff=3
+set ttyfast
+" 影响 <BS>、<Del>、CTRL-W 和 CTRL-U 在插入模式下的工作方式
+set backspace=indent,eol,start
+" 颜色设置
+set t_Co=256
+set background=dark
+set foldmethod=indent
+let g:solarized_termtrans = 1
+colorscheme desert
+"colorscheme xoria256-pluk
+
+" ====================================
+" ==== 键位映射                   ====
+" ====================================
+" 删除行末空白
+nnoremap <silent><leader>w :%s/\s\+$//<CR>:let @/=''<CR>
+" 重新载入配置
+map <leader>s :source ~/.vimrc<CR>
+" 切换行号显示
+map <leader>0 :set number!<CR>
+" 清除当前高亮显示
+nnoremap <leader><space> :noh<CR>
+" 重新选择上次改变或抽出的文本
+nnoremap <leader>v V`]
+" visual模式修改缩进时不退出该模式
+vnoremap < <gv
+vnoremap > >gv
+" 文本跳转
+vnoremap <tab> %
+nnoremap <tab> %
+" 标签页前后跳转
+nmap <C-N> :tabnext<CR>
+nmap <C-P> :tabprevious<CR>
+" insert mode shortcut
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
+inoremap <C-d> <DELETE>
+" command line
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <C-B> <Left>
+cnoremap <C-F> <Right>
+
