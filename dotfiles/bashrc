@@ -57,7 +57,19 @@ proml
 #############################
 # alias
 #############################
+
 alias grep='grep --color=auto'
 alias ls='ls -GF'
 alias ll='ls -lh'
 alias la='ll -a'
+
+export CLICOLOR=1
+#export CLICOLOR="xterm-color"
+#export LSCOLORS="gxfxcxdxbxegedabagacad"
+
+# aliases
+alias cd..="cd .."
+alias l="ls"
+
+alias p='proxychains4'
+alias sup='sudo proxychains4'
