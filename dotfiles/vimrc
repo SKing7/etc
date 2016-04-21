@@ -19,8 +19,6 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 " ------------------------ </vundle>
 
-" <vim-git> ------------------------
-
 noremap <leader>g :call git#BlameRange()<CR>
 vnoremap K y:call git#GrepText(getreg('"'))<CR>
 nnoremap K :call git#GrepCursorWord()<CR>
@@ -30,6 +28,19 @@ nnoremap <C-T> ^<C-W>F
 " <emmet-vim> ------------------------
 let g:user_emmet_leader_key='<leader>t'
 " ------------------------ </emmet-vim>
+
+"short cut
+function! HandleURL()
+  let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
+  echo s:uri
+  if s:uri != ""
+    silent exec "!open '".s:uri."'"
+  else
+    echo "No URI found in line."
+  endif
+endfunction
+
+map <leader>u :call HandleURL()<cr>
 
 " <auto-pairs> ------------------------
 " let g:AutoPairsFlyMode=1
@@ -178,8 +189,10 @@ let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 " folding section begins
 " =======================================
 " don't use syntax folding, it could be very slow
-set foldmethod=indent
-set foldlevelstart=2
+" "使用语法高亮定义代码折叠
+set foldmethod=syntax
+" "打开文件是默认不折叠代码
+set foldlevelstart=99
 let javaScript_fold=1         " JavaScript
 let perl_fold=1               " Perl
 let php_folding=1             " PHP
@@ -235,9 +248,16 @@ set number
 "使用:e命令的时候 可选项预览
 set wildmenu
 
-" solarized
+" 配色
+set t_Co=256
 set background=dark
+let g:solarized_termtrans = 1
 colorscheme solarized
+" colorscheme desert
+
+"状态
+set statusline+=%F
+set laststatus=2
 
  " Store swap files in fixed location, not current directory.
  set dir=~/.vimswap//,/var/tmp//,/tmp//,.
